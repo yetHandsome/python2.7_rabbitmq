@@ -1,5 +1,5 @@
 # python2.7_rabbitmq
-
+```
 ####环境
 vagrant init ubuntu/trusty64
 
@@ -68,10 +68,9 @@ python emit_log_direct.py msg  "Run. Run. Or it will explode 5."
 ####实验5 -- 主题交换机
 >发送到主题交换机（topic exchange）的消息不可以携带随意什么样子的路由键（routing_key），它的路由键 必须是一个由.分隔开的词语列表。这些单词随便是什么都可以，但是最好是跟携带它们的消息有关系的词汇。以下是 几个推荐的例子："stock.usd.nyse", "nyse.vmw", "quick.orange.rabbit"。词语的个数可以随意， 但是不要超过255字节。
 
-```
 * 用来表示一个单词
 # 用来表示任意数量（零个或多个）单词
-```
+
 
 执行命令之前，先确保服务已经开启
 sudo service rabbitmq-server start  
@@ -123,3 +122,4 @@ python rpc_client.py
 客户端是否需要实现类似 RPC 超时的东西。
 如果服务器发生故障，并且抛出异常，应该被转发到客户端吗？
 在处理前，防止混入无效的信息（例如检查边界）
+```
