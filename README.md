@@ -6,10 +6,38 @@ vagrant init ubuntu/trusty64
 sudo apt-get install python-pip git-core  # 安装所需要的依赖，未能成功安装，请 update 后进行安装。
 sudo pip install pika==0.9.5
 
+# 下面分别从
+实验1
+1对1，单个消息（可能有多个发布者，但是对应的任何一个消息）被单个消费者消费
+
+实验2
+消息可以设置确认确保不会丢失（程序做好幂等），消息队列可以持久化，消息除了可以轮询（每个消费者消费一个）,还可以公平调度（给空闲消费者）
+
+实验3 -- 发布于订阅
+1对多，消息不仅仅可以是 单个消息（可能有多个发布者，但是对应的任何一个消息）被单个消费者消费 ，还可以通过发布者设置 fanout 类型的交换机，让一个消息被所有订阅者接受 channel.exchange_declare(exchange='logs',type='fanout')
+一般消费者也跟发布者都不必指定队列，只需要指定交换机
+
+实验4 -- 路由
+不仅可以1对多，生产者、消费者定义 direct 类型交换机 channel.exchange_declare(exchange='direct_logs',type='direct')
+消费者还可以通过 channel.queue_bind(exchange='direct_logs',queue=queue_name,routing_key=severity) 绑定一个或多个 routing_key，
+对生产者发布的消息进行过滤，只订阅自己感兴趣的消息
+
+实验5 -- 主题交换机
+不仅可以只订阅自己感兴趣的消息，还可以通过生产者、消费者定义 topic 类型交换机 channel.exchange_declare(exchange='topic_logs',type='topic') 
+订阅某些主题
 下面每个实验多用下面指令查看绑定情况
 sudo rabbitmqctl list_bindings
 
-####实验1
+实验6 -- 远程过程调用
+发布者不仅可以发消息还可以收消息，发布者通过 self.channel.basic_consume(self.on_response, no_ack=True,queue=self.callback_queue) 
+#订阅回调队列，接收RPC的响应
+消费者接受到消息还可以在回调函数发布消息到之前发布者指定的 reply_to 上面去实现 RPC 响应
+ch.basic_publish(exchange='',
+                     routing_key=props.reply_to,
+                     properties=pika.BasicProperties(correlation_id = \
+                                                     props.correlation_id),
+                     body=str(response))
+
 #注意要先启动服务：
 sudo service rabbitmq-server start
 
