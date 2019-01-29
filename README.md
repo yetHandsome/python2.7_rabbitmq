@@ -25,8 +25,7 @@ sudo pip install pika==0.9.5
 实验5 -- 主题交换机
 不仅可以只订阅自己感兴趣的消息，还可以通过生产者、消费者定义 topic 类型交换机 channel.exchange_declare(exchange='topic_logs',type='topic') 
 订阅某些主题
-下面每个实验多用下面指令查看绑定情况
-sudo rabbitmqctl list_bindings
+
 
 实验6 -- 远程过程调用
 发布者不仅可以发消息还可以收消息，发布者通过 self.channel.basic_consume(self.on_response, no_ack=True,queue=self.callback_queue) 
@@ -37,6 +36,16 @@ ch.basic_publish(exchange='',
                      properties=pika.BasicProperties(correlation_id = \
                                                      props.correlation_id),
                      body=str(response))
+
+
+下面每个实验多用下面指令查看绑定情况
+sudo rabbitmqctl list_bindings
+
+下面每个实验多用下面指令查看绑定情况
+sudo rabbitmqctl list_bindings
+
+下面每个实验多用下面指令查看绑定情况
+sudo rabbitmqctl list_bindings
 
 #注意要先启动服务：
 sudo service rabbitmq-server start
